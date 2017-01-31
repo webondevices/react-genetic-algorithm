@@ -1,18 +1,18 @@
 import util from './util.js';
 
 class DNA {
-	constructor(num){
+    constructor(num){
 
-		// The genetic sequence
-	    this.genes = [];
-	    this.fitness = 0;
-	    
-	    // Random DNA generated from characters
+        // The genetic sequence
+        this.genes = [];
+        this.fitness = 0;
+        
+        // Random DNA generated from characters
         this.genes = Array(num).fill(null);
         this.genes = this.genes.map(() => util.newChar());
-	}
+    }
 
-	// Converts character array to a String
+    // Converts character array to a String
     getPhrase() {
         return this.genes.join('');
     }

@@ -20764,7 +20764,7 @@ exports.default = Population;
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -20786,77 +20786,77 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var World = function (_React$Component) {
-	_inherits(World, _React$Component);
+    _inherits(World, _React$Component);
 
-	function World() {
-		_classCallCheck(this, World);
+    function World() {
+        _classCallCheck(this, World);
 
-		var _this = _possibleConstructorReturn(this, (World.__proto__ || Object.getPrototypeOf(World)).call(this));
+        var _this = _possibleConstructorReturn(this, (World.__proto__ || Object.getPrototypeOf(World)).call(this));
 
-		_this.state = {
-			result: ''
-		};
+        _this.state = {
+            result: ''
+        };
 
-		// Simulation settings
-		_this._targetPhrase = 'Hello Web on Devices';
-		_this._mutationRate = 0.01;
-		_this._populationSize = 300;
+        // Simulation settings
+        _this._targetPhrase = 'Hello Web on Devices';
+        _this._mutationRate = 0.01;
+        _this._populationSize = 300;
 
-		_this._running = true;
+        _this._running = true;
 
-		// Initialise population
-		_this._population = new _Population2.default(_this._targetPhrase, _this._mutationRate, _this._populationSize);
+        // Initialise population
+        _this._population = new _Population2.default(_this._targetPhrase, _this._mutationRate, _this._populationSize);
 
-		_this._draw = _this._draw.bind(_this);
-		return _this;
-	}
+        _this._draw = _this._draw.bind(_this);
+        return _this;
+    }
 
-	_createClass(World, [{
-		key: 'componentDidMount',
-		value: function componentDidMount() {
+    _createClass(World, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
 
-			// Start simulation
-			this._draw();
-		}
-	}, {
-		key: '_draw',
-		value: function _draw() {
+            // Start simulation
+            this._draw();
+        }
+    }, {
+        key: '_draw',
+        value: function _draw() {
 
-			// Generate weighed mating pool with the fittest members
-			this._population.naturalSelection();
+            // Generate weighed mating pool with the fittest members
+            this._population.naturalSelection();
 
-			// Generate new population of children from parents in the mating pool
-			this._population.generate();
+            // Generate new population of children from parents in the mating pool
+            this._population.generate();
 
-			// Calculate fitness score of the new population
-			this._population.calcPopulationFitness();
+            // Calculate fitness score of the new population
+            this._population.calcPopulationFitness();
 
-			// Find the fittest member of the population and see if target is reached
-			this._population.evaluate();
+            // Find the fittest member of the population and see if target is reached
+            this._population.evaluate();
 
-			// If target phrase is found, stop
-			if (this._population.isFinished()) this._running = false;
+            // If target phrase is found, stop
+            if (this._population.isFinished()) this._running = false;
 
-			// Display best result so far
-			this.setState({ result: this._population.getBest() });
+            // Display best result so far
+            this.setState({ result: this._population.getBest() });
 
-			// Loop and start new generation
-			if (this._running) window.requestAnimationFrame(this._draw);
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			var myStyle = this._running ? { backgroundColor: 'red' } : { backgroundColor: 'green' };
+            // Loop and start new generation
+            if (this._running) window.requestAnimationFrame(this._draw);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var myStyle = this._running ? { backgroundColor: 'red' } : { backgroundColor: 'green' };
 
-			return _react2.default.createElement(
-				'div',
-				{ style: myStyle, className: 'result' },
-				this.state.result
-			);
-		}
-	}]);
+            return _react2.default.createElement(
+                'div',
+                { style: myStyle, className: 'result' },
+                this.state.result
+            );
+        }
+    }]);
 
-	return World;
+    return World;
 }(_react2.default.Component);
 
 exports.default = World;
@@ -20884,25 +20884,25 @@ _reactDom2.default.render(_react2.default.createElement(_World2.default, null), 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+    value: true
 });
 var util = {
-	map: function map(value, low1, high1, low2, high2) {
-		return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
-	},
+    map: function map(value, low1, high1, low2, high2) {
+        return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
+    },
 
-	randomInt: function randomInt(min, max) {
-		return Math.floor(Math.random() * (max - min + 1) + min);
-	},
+    randomInt: function randomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    },
 
-	newChar: function newChar() {
-		var c = this.randomInt(63, 122 - 1);
+    newChar: function newChar() {
+        var c = this.randomInt(63, 122 - 1);
 
-		if (c === 63) c = 32;
-		if (c === 64) c = 46;
+        if (c === 63) c = 32;
+        if (c === 64) c = 46;
 
-		return String.fromCharCode(c);
-	}
+        return String.fromCharCode(c);
+    }
 };
 
 exports.default = util;

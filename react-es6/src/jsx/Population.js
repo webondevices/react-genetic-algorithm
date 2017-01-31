@@ -2,30 +2,30 @@ import DNA from './DNA.js';
 import util from './util.js';
 
 class Population {
-	constructor(t, m, populationSize) {
-		this._target = t;
-		this._mutationRate = m;
+    constructor(t, m, populationSize) {
+        this._target = t;
+        this._mutationRate = m;
         this._generations = 0;
         this._perfectScore = 1;
         this._finished = false;
         this._matingPool = [];
-		this._best = '';
+        this._best = '';
 
         // Fill population with DNA instances
         this._population = Array(populationSize).fill(null);
         this._population = this._population.map(() => new DNA(this._target.length));
 
-		this.calcPopulationFitness();
-	}
+        this.calcPopulationFitness();
+    }
 
-	// Calculate fitness value for every member of the population
-	calcPopulationFitness() {
+    // Calculate fitness value for every member of the population
+    calcPopulationFitness() {
         this._population.forEach(member => {
             member.calcFitness(this._target);
         });
-	}
+    }
 
-	// Generate a weighed mating pool
+    // Generate a weighed mating pool
     naturalSelection() {
         let maxFitness = 0;
     
