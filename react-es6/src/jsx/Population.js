@@ -3,25 +3,25 @@ import util from './util.js';
 
 class Population {
     constructor(t, m, populationSize) {
-        this._target = t;
-        this._mutationRate = m;
-        this._generations = 0;
-        this._perfectScore = 1;
-        this._finished = false;
-        this._matingPool = [];
-        this._best = '';
+        this.target = t;
+        this.mutationRate = m;
+        this.generations = 0;
+        this.perfectScore = 1;
+        this.finished = false;
+        this.matingPool = [];
+        this.best = '';
 
         // Fill population with DNA instances
-        this._population = Array(populationSize).fill(null);
-        this._population = this._population.map(() => new DNA(this._target.length));
+        this.population = Array(populationSize).fill(null);
+        this.population = this.population.map(() => new DNA(this.target.length));
 
         this.calcPopulationFitness();
     }
 
     // Calculate fitness value for every member of the population
     calcPopulationFitness() {
-        this._population.forEach(member => {
-            member.calcFitness(this._target);
+        this.population.forEach(member => {
+            member.calcFitness(this.target);
         });
     }
 
@@ -29,23 +29,23 @@ class Population {
     naturalSelection() {
         let maxFitness = 0;
     
-        this._matingPool = [];
+        this.matingPool = [];
 
         // Find the highest fitness value in the population
-        this._population.forEach(member => {
+        this.population.forEach(member => {
             maxFitness = member.fitness > maxFitness ? member.fitness : maxFitness;
         });
 
         // Based on fitness, each member is added to the mating pool a weighed number of times
         // higher fitness = more instance in pool = more likely to be picked as a parent
         // lower fitness = less instance in pool = less likely to be picked as a parent
-        this._population.forEach(member => {
+        this.population.forEach(member => {
             const fitness = util.map(member.fitness, 0, maxFitness, 0, 1);
             
             // Arbitrary multiplier
             let n = Math.floor(fitness * 50);
             for ( ; n >= 0; n--) {
-                this._matingPool.push(member);
+                this.matingPool.push(member);
             }
         });
     }
@@ -53,33 +53,33 @@ class Population {
     // Create a new generation
     generate() {
 
-        this._population.forEach((member, i) => {
+        this.population.forEach((member, i) => {
 
             // Random index for the pool
-            const a = util.randomInt(0, this._matingPool.length - 1);
-            const b = util.randomInt(0, this._matingPool.length - 1);
+            const a = util.randomInt(0, this.matingPool.length - 1);
+            const b = util.randomInt(0, this.matingPool.length - 1);
 
             // Picking a random item from the pool
-            const partnerA = this._matingPool[a];
-            const partnerB = this._matingPool[b];
+            const partnerA = this.matingPool[a];
+            const partnerB = this.matingPool[b];
 
             // Generating a child with DNA crossover
             const child = partnerA.crossover(partnerB);
 
             // Mutate DNA for diversity
-            child.mutate(this._mutationRate);
+            child.mutate(this.mutationRate);
 
             // Add child to the population
-            this._population[i] = child;
+            this.population[i] = child;
 
         });
 
-        this._generations++;
+        this.generations += 1;
     }
 
 
     getBest() {
-        return this._best;
+        return this.best;
     }
 
     evaluate() {
@@ -87,7 +87,7 @@ class Population {
         let index = 0;
 
         // Find the fittest member of the population
-        this._population.forEach((member, i) => {
+        this.population.forEach((member, i) => {
             if (member.fitness > worldrecord) {
                 index = i;
                 worldrecord = member.fitness;
@@ -95,31 +95,29 @@ class Population {
         });
 
         // Get best result so far
-        this._best = this._population[index].getPhrase();
+        this.best = this.population[index].getPhrase();
 
         // Stop simulation if found result
-        if (worldrecord === this._perfectScore) {
-            this._finished = true;
-        }
+        if (worldrecord === this.perfectScore) this.finished = true;
     }
 
     isFinished() {
-        return this._finished;
+        return this.finished;
     }
 
     getGenerations() {
-        return this._generations;
+        return this.generations;
     }
 
     // Get average fitness for the population
     getAverageFitness() {
         let total = 0;
 
-        this._population.forEach(member => {
+        this.population.forEach(member => {
             total += member.fitness;
         });
 
-        return total / this._population.length;
+        return total / this.population.length;
     }
 }
 

@@ -20535,7 +20535,7 @@ var DNA = function () {
             var score = 0;
 
             this.genes.forEach(function (gene, i) {
-                if (gene === target.charAt(i)) score++;
+                if (gene === target.charAt(i)) score += 1;
             });
 
             this.fitness = score / target.length;
@@ -20613,18 +20613,18 @@ var Population = function () {
 
         _classCallCheck(this, Population);
 
-        this._target = t;
-        this._mutationRate = m;
-        this._generations = 0;
-        this._perfectScore = 1;
-        this._finished = false;
-        this._matingPool = [];
-        this._best = '';
+        this.target = t;
+        this.mutationRate = m;
+        this.generations = 0;
+        this.perfectScore = 1;
+        this.finished = false;
+        this.matingPool = [];
+        this.best = '';
 
         // Fill population with DNA instances
-        this._population = Array(populationSize).fill(null);
-        this._population = this._population.map(function () {
-            return new _DNA2.default(_this._target.length);
+        this.population = Array(populationSize).fill(null);
+        this.population = this.population.map(function () {
+            return new _DNA2.default(_this.target.length);
         });
 
         this.calcPopulationFitness();
@@ -20638,8 +20638,8 @@ var Population = function () {
         value: function calcPopulationFitness() {
             var _this2 = this;
 
-            this._population.forEach(function (member) {
-                member.calcFitness(_this2._target);
+            this.population.forEach(function (member) {
+                member.calcFitness(_this2.target);
             });
         }
 
@@ -20652,23 +20652,23 @@ var Population = function () {
 
             var maxFitness = 0;
 
-            this._matingPool = [];
+            this.matingPool = [];
 
             // Find the highest fitness value in the population
-            this._population.forEach(function (member) {
+            this.population.forEach(function (member) {
                 maxFitness = member.fitness > maxFitness ? member.fitness : maxFitness;
             });
 
             // Based on fitness, each member is added to the mating pool a weighed number of times
             // higher fitness = more instance in pool = more likely to be picked as a parent
             // lower fitness = less instance in pool = less likely to be picked as a parent
-            this._population.forEach(function (member) {
+            this.population.forEach(function (member) {
                 var fitness = _util2.default.map(member.fitness, 0, maxFitness, 0, 1);
 
                 // Arbitrary multiplier
                 var n = Math.floor(fitness * 50);
                 for (; n >= 0; n--) {
-                    _this3._matingPool.push(member);
+                    _this3.matingPool.push(member);
                 }
             });
         }
@@ -20680,32 +20680,32 @@ var Population = function () {
         value: function generate() {
             var _this4 = this;
 
-            this._population.forEach(function (member, i) {
+            this.population.forEach(function (member, i) {
 
                 // Random index for the pool
-                var a = _util2.default.randomInt(0, _this4._matingPool.length - 1);
-                var b = _util2.default.randomInt(0, _this4._matingPool.length - 1);
+                var a = _util2.default.randomInt(0, _this4.matingPool.length - 1);
+                var b = _util2.default.randomInt(0, _this4.matingPool.length - 1);
 
                 // Picking a random item from the pool
-                var partnerA = _this4._matingPool[a];
-                var partnerB = _this4._matingPool[b];
+                var partnerA = _this4.matingPool[a];
+                var partnerB = _this4.matingPool[b];
 
                 // Generating a child with DNA crossover
                 var child = partnerA.crossover(partnerB);
 
                 // Mutate DNA for diversity
-                child.mutate(_this4._mutationRate);
+                child.mutate(_this4.mutationRate);
 
                 // Add child to the population
-                _this4._population[i] = child;
+                _this4.population[i] = child;
             });
 
-            this._generations++;
+            this.generations += 1;
         }
     }, {
         key: 'getBest',
         value: function getBest() {
-            return this._best;
+            return this.best;
         }
     }, {
         key: 'evaluate',
@@ -20714,7 +20714,7 @@ var Population = function () {
             var index = 0;
 
             // Find the fittest member of the population
-            this._population.forEach(function (member, i) {
+            this.population.forEach(function (member, i) {
                 if (member.fitness > worldrecord) {
                     index = i;
                     worldrecord = member.fitness;
@@ -20722,22 +20722,20 @@ var Population = function () {
             });
 
             // Get best result so far
-            this._best = this._population[index].getPhrase();
+            this.best = this.population[index].getPhrase();
 
             // Stop simulation if found result
-            if (worldrecord === this._perfectScore) {
-                this._finished = true;
-            }
+            if (worldrecord === this.perfectScore) this.finished = true;
         }
     }, {
         key: 'isFinished',
         value: function isFinished() {
-            return this._finished;
+            return this.finished;
         }
     }, {
         key: 'getGenerations',
         value: function getGenerations() {
-            return this._generations;
+            return this.generations;
         }
 
         // Get average fitness for the population
@@ -20747,11 +20745,11 @@ var Population = function () {
         value: function getAverageFitness() {
             var total = 0;
 
-            this._population.forEach(function (member) {
+            this.population.forEach(function (member) {
                 total += member.fitness;
             });
 
-            return total / this._population.length;
+            return total / this.population.length;
         }
     }]);
 
@@ -20798,16 +20796,16 @@ var World = function (_React$Component) {
         };
 
         // Simulation settings
-        _this._targetPhrase = 'Hello Web on Devices';
-        _this._mutationRate = 0.01;
-        _this._populationSize = 300;
+        _this.targetPhrase = 'Hello Web on Devices';
+        _this.mutationRate = 0.01;
+        _this.populationSize = 300;
 
-        _this._running = true;
+        _this.running = true;
 
         // Initialise population
-        _this._population = new _Population2.default(_this._targetPhrase, _this._mutationRate, _this._populationSize);
+        _this.population = new _Population2.default(_this.targetPhrase, _this.mutationRate, _this.populationSize);
 
-        _this._draw = _this._draw.bind(_this);
+        _this.draw = _this.draw.bind(_this);
         return _this;
     }
 
@@ -20816,37 +20814,37 @@ var World = function (_React$Component) {
         value: function componentDidMount() {
 
             // Start simulation
-            this._draw();
+            this.draw();
         }
     }, {
-        key: '_draw',
-        value: function _draw() {
+        key: 'draw',
+        value: function draw() {
 
             // Generate weighed mating pool with the fittest members
-            this._population.naturalSelection();
+            this.population.naturalSelection();
 
             // Generate new population of children from parents in the mating pool
-            this._population.generate();
+            this.population.generate();
 
             // Calculate fitness score of the new population
-            this._population.calcPopulationFitness();
+            this.population.calcPopulationFitness();
 
             // Find the fittest member of the population and see if target is reached
-            this._population.evaluate();
+            this.population.evaluate();
 
             // If target phrase is found, stop
-            if (this._population.isFinished()) this._running = false;
+            if (this.population.isFinished()) this.running = false;
 
             // Display best result so far
-            this.setState({ result: this._population.getBest() });
+            this.setState({ result: this.population.getBest() });
 
             // Loop and start new generation
-            if (this._running) window.requestAnimationFrame(this._draw);
+            if (this.running) window.requestAnimationFrame(this.draw);
         }
     }, {
         key: 'render',
         value: function render() {
-            var myStyle = this._running ? { backgroundColor: 'red' } : { backgroundColor: 'green' };
+            var myStyle = this.running ? { backgroundColor: 'red' } : { backgroundColor: 'green' };
 
             return _react2.default.createElement(
                 'div',

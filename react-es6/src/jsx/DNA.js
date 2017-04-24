@@ -22,7 +22,7 @@ class DNA {
         let score = 0;
 
         this.genes.forEach((gene, i) => {
-            if (gene === target.charAt(i)) score++;
+            if (gene === target.charAt(i)) score += 1;
         });
 
         this.fitness = score / target.length;
